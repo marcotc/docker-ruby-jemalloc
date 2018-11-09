@@ -16,7 +16,11 @@ class Main
     end
 
     def call
-      FileUtils.remove_dir('./tmp') rescue Errno::ENOENT
+      begin
+        FileUtils.remove_dir('./tmp')
+      rescue
+        Errno::ENOENT
+      end
       clone_source
       Dir.chdir(File.join(DIRECTORY, NAME)) do
         Replace.new.in_project
@@ -51,9 +55,16 @@ class Replace < Thor
   end
 
   def root
-    insert_into_file '.travis.yml',
-    "  - cd ./tmp/ruby\n",
-    after: "before_script:\n"
+    insert_into_file '.travis.yml',                     
+                      (
+                      <<~YAML
+                        - bundle install
+                        - bundle exec ruby main.rb
+                        - cd ./tmp/ruby/
+                      #
+                      YAML
+                     ),
+                     after: "before_script:\n"
   end
 end
 

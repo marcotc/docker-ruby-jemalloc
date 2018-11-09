@@ -18,7 +18,7 @@ class Main
     def call
       begin
         FileUtils.remove_dir('./tmp')
-      rescue
+      rescue StandardError
         Errno::ENOENT
       end
       clone_source
@@ -55,15 +55,13 @@ class Replace < Thor
   end
 
   def root
-    insert_into_file '.travis.yml',                     
-                      (
-                      <<~YAML
-                        - bundle install
-                        - bundle exec ruby main.rb
-                        - cd ./tmp/ruby/
-                      #
-                      YAML
-                     ),
+    insert_into_file '.travis.yml',
+                     <<~YAML,
+                         - bundle install
+                         - bundle exec ruby main.rb
+                         - cd ./tmp/ruby/
+                       #
+                     YAML
                      after: "before_script:\n"
 
     # Only build slim builds for now

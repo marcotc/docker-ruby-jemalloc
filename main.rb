@@ -66,8 +66,12 @@ class Replace < Thor
                      ),
                      after: "before_script:\n"
 
+    # Only build slim builds for now
     comment_lines '.travis.yml', /VARIANT=/
     uncomment_lines '.travis.yml', /VARIANT=.*\/slim$/
+
+    # Skip Ruby 2.6-rc until jemalloc fix is released
+    comment_lines '.travis.yml', /VERSION=2\.6-rc/
   end
 end
 

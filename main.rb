@@ -65,6 +65,9 @@ class Replace < Thor
                       YAML
                      ),
                      after: "before_script:\n"
+
+    comment_lines '.travis.yml', /VARIANT=/
+    uncomment_lines '.travis.yml', /VARIANT=.*\/slim$/
   end
 end
 

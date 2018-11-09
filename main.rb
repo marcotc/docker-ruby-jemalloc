@@ -2,6 +2,7 @@
 
 require 'thor'
 require 'git'
+require 'fileutils'
 
 # WIP WIP WIP
 class Main
@@ -15,6 +16,7 @@ class Main
     end
 
     def call
+      FileUtils.remove_dir('./tmp') rescue Errno::ENOENT
       clone_source
       Dir.chdir(File.join(DIRECTORY, NAME)) do
         Replace.new.in_project
@@ -49,9 +51,9 @@ class Replace < Thor
   end
 
   def root
-    prepend_file '.travis.yml', <<~YAML
-      before_script: cd ./tmp/ruby
-    YAML
+    insert_into_file '.travis.yml',
+    "  - cd ./tmp/ruby\n",
+    after: "before_script:\n"
   end
 end
 

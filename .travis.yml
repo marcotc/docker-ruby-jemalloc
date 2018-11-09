@@ -1,4 +1,3 @@
-before_script: cd ./tmp/ruby
 language: bash
 services: docker
 
@@ -28,6 +27,7 @@ install:
   - git clone --depth 1 https://github.com/docker-library/official-images.git ~/official-images
 
 before_script:
+  - cd ./tmp/ruby
   - env | sort
   - cd "$VERSION/$VARIANT"
   - slash='/'; image="ruby:${VERSION}-${VARIANT//$slash/-}"

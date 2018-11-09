@@ -74,3 +74,5 @@ class Replace < Thor
 end
 
 Main.call
+
+# Test: cd tmp/ruby/; export VERSION=2.5 VARIANT=stretch/slim; cd "$VERSION/$VARIANT"; export slash='/'; image="jemalloc/ruby:${VERSION}-${VARIANT//$slash/-}"; docker build -t "$image" .
